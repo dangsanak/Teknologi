@@ -141,18 +141,29 @@
             return tags.map(tag => `<span class="tag">#${tag}</span>`).join('');
         }
 
-        // Fungsi pembantu untuk merender gambar atau video jika ada
-        function renderMedia(article) {
-            if (article.video) {
-                return `
-                <div class="video-container">
-                    <iframe src="${article.video}" allowfullscreen></iframe>
-                </div>`;
-            } else if (article.image) {
-                return `<img src="${article.image}" alt="${article.title}" class="article-image">`;
-            }
-            return ''; // Kosong jika tidak ada gambar/video
+        // Fungsi untuk merender gambar, video embed (YouTube/Vimeo), atau video file (.mp4)
+function renderMedia(article) {
+    if (article.video) {
+        // Cek apakah link video adalah file langsung (.mp4 atau .webm)
+        if (article.video.endsWith('.mp4') || article.video.endsWith('.webm')) {
+            return `
+            <video controls style="width: 100%; max-height: 400px; border-radius: 8px; margin-bottom: 15px; background-color: black;">
+                <source src="${article.video}" type="video/mp4">
+                Maaf, browser Anda tidak mendukung pemutar video.
+            </video>`;
+        } 
+        // Jika bukan .mp4, anggap sebagai link Embed (YouTube, Vimeo, dll)
+        else {
+            return `
+            <div class="video-container">
+                <iframe src="${article.video}" allowfullscreen></iframe>
+            </div>`;
         }
+    } else if (article.image) {
+        return `<img src="${article.image}" alt="${article.title}" class="article-image">`;
+    }
+    return ''; // Kosong jika tidak ada media
+}
 
         function renderHome() {
             let html = '';
