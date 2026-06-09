@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html hreflang="x-default">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +7,16 @@
     <style>
         /* CSS Variabel untuk Tema Pink */
         :root {
-            --bg-color: #fff0f5;      /* Lavender Blush */
-            --header-bg: #ff69b4;     /* Hot Pink */
+            --bg-color: #fff0f5;
+            --header-bg: #ff69b4;
             --text-color: #4a4a4a;
             --card-bg: #ffffff;
-            --tag-bg: #ffb6c1;        /* Light Pink */
-            --btn-bg: #ff1493;        /* Deep Pink */
-            --btn-hover: #c71585;     /* Medium Violet Red */
+            --tag-bg: #ffb6c1;
+            --btn-bg: #ff1493;
+            --btn-hover: #c71585;
         }
 
-        /* Reset dan Dasar */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -29,7 +24,6 @@
             line-height: 1.6;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             color: white;
@@ -37,22 +31,18 @@
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        header h1 {
-            cursor: pointer;
-        }
+        header h1 { cursor: pointer; }
 
-        /* Layout: 1 Grid Vertikal, 100% Lebar untuk Semua Gawai */
         main {
             width: 100%;
-            max-width: 800px; /* Batas maksimal agar rapi di desktop, di HP akan 100% */
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Grid Vertikal */
+            flex-direction: column;
             gap: 20px;
         }
 
-        /* Komponen Kartu Artikel */
         .article-card {
             background: var(--card-bg);
             padding: 25px;
@@ -60,67 +50,50 @@
             border-left: 6px solid var(--header-bg);
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .article-title {
-            color: var(--btn-bg);
-            margin-bottom: 10px;
-            font-size: 1.5rem;
-        }
+        .article-title { color: var(--btn-bg); margin-bottom: 10px; font-size: 1.5rem; }
         
-        /* Tags / Kata Kunci */
-        .tags-container {
-            margin-bottom: 15px;
-        }
+        .tags-container { margin-bottom: 15px; }
         .tag {
-            display: inline-block;
-            background-color: var(--tag-bg);
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            font-weight: bold;
-            text-transform: lowercase;
+            display: inline-block; background-color: var(--tag-bg); color: #fff;
+            padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
+            margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-transform: lowercase;
         }
 
-        /* Deskripsi dan Konten */
-        .article-desc {
-            font-style: italic;
-            color: #666;
+        /* --- CSS BARU UNTUK GAMBAR DAN VIDEO --- */
+        .article-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
             margin-bottom: 15px;
-            border-bottom: 1px dashed var(--tag-bg);
-            padding-bottom: 10px;
         }
-        .article-content {
-            margin-bottom: 20px;
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+        /* -------------------------------------- */
 
-        /* Tombol Baca Selengkapnya / Navigasi */
+        .article-desc {
+            font-style: italic; color: #666; margin-bottom: 15px;
+            border-bottom: 1px dashed var(--tag-bg); padding-bottom: 10px;
+        }
+        .article-content { margin-bottom: 20px; }
+
         .btn {
-            display: inline-block;
-            background-color: var(--btn-bg);
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            cursor: pointer;
-            border: none;
+            display: inline-block; background-color: var(--btn-bg); color: white;
+            text-decoration: none; padding: 10px 20px; border-radius: 6px;
+            font-weight: bold; transition: background-color 0.3s; cursor: pointer; border: none;
         }
-        .btn:hover {
-            background-color: var(--btn-hover);
-        }
-
-        /* Tombol Kembali */
-        .btn-back {
-            background-color: #ccc;
-            color: #333;
-            margin-top: 20px;
-        }
-        .btn-back:hover {
-            background-color: #999;
-        }
+        .btn:hover { background-color: var(--btn-hover); }
+        .btn-back { background-color: #ccc; color: #333; margin-top: 20px; }
+        .btn-back:hover { background-color: #999; }
     </style>
 </head>
 <body>
@@ -133,45 +106,61 @@
     <main id="app"></main>
 
     <script>
-        // Database Artikel Statis
+        // Menambahkan properti "image" atau "video" ke dalam artikel
         const articles = [
             {
                 title: "Kucing: Peliharaan Lucu Penawar Stres",
                 slug: "kucing-peliharaan-lucu",
                 tags: ["Kucing", "Hewan Peliharaan", "Kesehatan Mental"],
+                image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Mengenal lebih dekat tingkah laku kucing dan manfaat memeliharanya untuk kesehatan mental kita sehari-hari.",
-                content: "Kucing adalah salah satu hewan peliharaan paling populer di dunia. Tingkah mereka yang menggemaskan, dari mengejar bola benang hingga tidur di tempat-tempat sempit, selalu berhasil membuat pemiliknya tersenyum. Namun lebih dari sekadar lucu, penelitian menunjukkan bahwa dengkuran kucing (purring) berada pada frekuensi yang dapat menurunkan tekanan darah dan meredakan stres. Memelihara kucing mengajarkan kita tentang tanggung jawab, namun imbalannya adalah kasih sayang tanpa syarat dari makhluk kecil berbulu ini."
+                content: "Kucing adalah salah satu hewan peliharaan paling populer di dunia. Tingkah mereka yang menggemaskan, dari mengejar bola benang hingga tidur di tempat-tempat sempit, selalu berhasil membuat pemiliknya tersenyum. Namun lebih dari sekadar lucu, penelitian menunjukkan bahwa dengkuran kucing (purring) berada pada frekuensi yang dapat menurunkan tekanan darah dan meredakan stres."
             },
             {
                 title: "Pesona Anggun Baju Abaya Modern",
                 slug: "pesona-baju-abaya",
                 tags: ["Baju Abaya", "Fashion Muslim", "Gaya Hidup"],
+                image: "https://images.unsplash.com/photo-1589405858862-2ac9cbf41369?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Perkembangan baju abaya dari pakaian tradisional menjadi tren fashion muslimah modern yang elegan.",
-                content: "Baju abaya telah berevolusi dari sekadar pakaian tradisional di Timur Tengah menjadi salah satu ikon fashion muslimah global. Identik dengan potongannya yang longgar dan menjuntai hingga ke mata kaki, abaya kini hadir dengan berbagai desain, bordir, dan palet warna yang menarik tanpa menghilangkan nilai syar'i-nya. Penggunaan bahan yang jatuh dan adem membuatnya sangat nyaman digunakan. Abaya modern sangat fleksibel; padukan dengan sepatu hak tinggi untuk acara formal, atau gunakan flat shoes untuk tampilan santai yang tetap anggun."
+                content: "Baju abaya telah berevolusi dari sekadar pakaian tradisional di Timur Tengah menjadi salah satu ikon fashion muslimah global. Identik dengan potongannya yang longgar dan menjuntai hingga ke mata kaki, abaya kini hadir dengan berbagai desain, bordir, dan palet warna yang menarik tanpa menghilangkan nilai syar'i-nya."
             },
             {
                 title: "Mengapa Sapi Menghabiskan Waktunya Makan Rumput?",
                 slug: "sapi-makan-rumput",
-                tags: ["Sapi", "Alam", "Sains Ternak", "Biologi"],
+                tags: ["Sapi", "Alam", "Sains Ternak"],
+                // Menggunakan ID Video YouTube untuk disisipkan
+                video: "https://www.youtube.com/embed/gHk_97qUurE",
                 description: "Fakta ilmiah di balik perilaku sapi yang selalu terlihat mengunyah rumput sepanjang hari.",
-                content: "Jika Anda melihat sapi di padang rumput, Anda hampir pasti melihat mereka sedang makan. Sapi adalah hewan herbivora rumaninsia (pemamah biak) yang memiliki sistem pencernaan unik dengan lambung empat ruang. Karena rumput mengandung selulosa yang sulit dicerna, sapi menelan rumput secara kasar, menyimpannya di lambung pertama (rumen), lalu mengeluarkannya kembali ke mulut untuk dikunyah ulang saat mereka sedang beristirahat. Proses memamah biak ini sangat penting agar bakteri di perut mereka dapat memecah serat rumput menjadi energi yang menutrisi tubuh sapi."
+                content: "Jika Anda melihat sapi di padang rumput, Anda hampir pasti melihat mereka sedang makan. Sapi adalah hewan herbivora rumaninsia (pemamah biak) yang memiliki sistem pencernaan unik dengan lambung empat ruang. Karena rumput mengandung selulosa yang sulit dicerna, sapi menelan rumput secara kasar, menyimpannya di lambung pertama (rumen), lalu mengeluarkannya kembali ke mulut untuk dikunyah ulang saat mereka sedang beristirahat."
             }
         ];
 
         const appContainer = document.getElementById('app');
 
-        // Fungsi pembantu untuk membuat HTML Tag
         function renderTags(tags) {
             return tags.map(tag => `<span class="tag">#${tag}</span>`).join('');
         }
 
-        // Fungsi untuk menampilkan daftar artikel (Beranda)
+        // Fungsi pembantu untuk merender gambar atau video jika ada
+        function renderMedia(article) {
+            if (article.video) {
+                return `
+                <div class="video-container">
+                    <iframe src="${article.video}" allowfullscreen></iframe>
+                </div>`;
+            } else if (article.image) {
+                return `<img src="${article.image}" alt="${article.title}" class="article-image">`;
+            }
+            return ''; // Kosong jika tidak ada gambar/video
+        }
+
         function renderHome() {
             let html = '';
             articles.forEach(article => {
                 html += `
                     <article class="article-card">
                         <h2 class="article-title">${article.title}</h2>
+                        ${renderMedia(article)}
                         <div class="tags-container">
                             ${renderTags(article.tags)}
                         </div>
@@ -183,14 +172,13 @@
             appContainer.innerHTML = html;
         }
 
-        // Fungsi untuk menampilkan satu artikel penuh
         function renderArticle(slug) {
             const article = articles.find(a => a.slug === slug);
-            
             if (article) {
                 appContainer.innerHTML = `
                     <article class="article-card">
                         <h2 class="article-title">${article.title}</h2>
+                        ${renderMedia(article)}
                         <div class="tags-container">
                             ${renderTags(article.tags)}
                         </div>
@@ -202,35 +190,26 @@
                     </article>
                 `;
             } else {
-                // Jika slug tidak ditemukan (404)
                 appContainer.innerHTML = `
                     <article class="article-card" style="text-align: center;">
                         <h2 class="article-title">Artikel Tidak Ditemukan</h2>
-                        <p>Maaf, artikel yang Anda cari tidak ada.</p>
-                        <br>
                         <a href="#" class="btn">&laquo; Kembali ke Beranda</a>
                     </article>
                 `;
             }
         }
 
-        // Sistem Router (Navigasi berdasarkan Hash URL)
         function router() {
-            // Mengambil slug dari URL (contoh: #sapi-makan-rumput -> sapi-makan-rumput)
             const slug = window.location.hash.substring(1); 
-            
             if (slug) {
-                renderArticle(slug); // Buka halaman artikel
-                window.scrollTo(0,0); // Scroll ke atas
+                renderArticle(slug);
+                window.scrollTo(0,0);
             } else {
-                renderHome(); // Buka halaman beranda
+                renderHome();
             }
         }
 
-        // Mendengarkan perubahan pada URL Hash (saat link diklik atau tombol back browser ditekan)
         window.addEventListener('hashchange', router);
-
-        // Render pertama kali saat halaman dimuat
         router();
     </script>
 </body>
