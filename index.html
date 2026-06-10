@@ -58,7 +58,24 @@
             padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
             margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-transform: lowercase;
         }
-
+/* CSS Baru untuk merapikan artikel panjang */
+.article-content p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+.article-content h3 {
+    color: var(--btn-bg);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+.article-content ul {
+    margin-bottom: 15px;
+    margin-left: 20px;
+}
+.article-content li {
+    margin-bottom: 8px;
+}
         /* --- CSS BARU UNTUK GAMBAR DAN VIDEO --- */
         .article-image {
             width: 100%;
@@ -195,7 +212,7 @@ function renderMedia(article) {
                         </div>
                         <p class="article-desc">${article.description}</p>
                         <div class="article-content">
-                            <p>${article.content}</p>
+                            ${article.content}
                         </div>
                         <a href="#" class="btn btn-back">&laquo; Kembali ke Beranda</a>
                     </article>
