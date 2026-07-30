@@ -30,13 +30,23 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         header h1 { cursor: pointer; }
 
+        header .top-actions {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
         main {
             width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
+            max-width: 1000px;
+            margin: 20px auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -58,7 +68,7 @@
             padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
             margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-transform: lowercase;
         }
-/* CSS Baru untuk merapikan artikel panjang */
+        /* CSS Baru untuk merapikan artikel panjang */
 .article-content p {
     margin-bottom: 15px;
     line-height: 1.8;
@@ -111,6 +121,33 @@
         .btn:hover { background-color: var(--btn-hover); }
         .btn-back { background-color: #ccc; color: #333; margin-top: 20px; }
         .btn-back:hover { background-color: #999; }
+
+        /* Form tambah artikel */
+        .form-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,240,245,0.9));
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,105,180,0.12);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .form-row { display:flex; gap:10px; margin-bottom:10px; }
+        .form-row .col { flex:1; display:flex; flex-direction:column; gap:6px; }
+        label { font-size:0.85rem; color:#333; }
+        input[type="text"], textarea {
+            padding:8px 10px; border-radius:6px; border:1px solid #e6a8c7; background:white;
+            font-size:0.95rem; color:#333;
+        }
+        textarea { min-height:120px; resize:vertical; }
+        .small { font-size:0.8rem; color:#555; }
+
+        .preview {
+            border:1px dashed rgba(0,0,0,0.08); padding:10px; border-radius:6px; background:#fff;
+            margin-top:10px;
+        }
+
+        @media (max-width:600px) {
+            .form-row { flex-direction:column; }
+        }
     </style>
 </head>
 <body>
@@ -118,46 +155,23 @@
     <header>
         <h1 onclick="window.location.hash=''">Teknologi Blog</h1>
         <p>Kumpulan Artikel Menarik Favorit Anda</p>
+        <div class="top-actions">
+            <button id="toggleFormBtn" class="btn" style="background:#fff;color:var(--btn-bg);font-weight:700;border:2px solid rgba(255,20,147,0.12);">+ Tambah Artikel</button>
+        </div>
     </header>
 
     <main id="app"></main>
 
     <script>
-        // Menambahkan properti "image" atau "video" ke dalam artikel
-        const articles = [
+        // Data awal (boleh diganti atau ditimpa dari localStorage)
+        let articles = [
             {
                 title: "Kucing: Peliharaan Lucu Penawar Stres",
                 slug: "kucing-peliharaan-lucu",
                 tags: ["Kucing", "Hewan Peliharaan", "Kesehatan Mental"],
                 image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Mengenal lebih dekat tingkah laku kucing dan manfaat memeliharanya untuk kesehatan mental kita sehari-hari.",
-                content: '<h2>Pesona Kucing: Sahabat Berbulu yang Memikat Hati Manusia</h2>
-<p>Kucing telah lama menjadi salah satu hewan peliharaan paling populer di seluruh dunia. Dengan langkahnya yang senyap, mata yang tajam, dan tingkah laku yang menggemaskan, hewan dari keluarga <i>feline</i> ini berhasil merebut tempat istimewa di hati jutaan orang.</p>
-<hr>
-<h3>Karakteristik dan Sifat Alami</h3>
-<p>Sebagai hewan karnivora obligat, kucing memiliki insting berburu yang sangat kuat. Meskipun sebagian besar kucing modern kini hidup nyaman di dalam rumah, naluri seperti mengintai, menerkam, dan memanjat tetap melekat pada diri mereka.</p>
-<p>Selain itu, kucing dikenal sebagai hewan yang sangat mandiri namun tetap penyayang. Mereka memiliki cara komunikasi yang unik untuk berinteraksi dengan manusia, mulai dari mengeong, mendengkur (<i>purring</i>), hingga menggesekkan tubuhnya sebagai tanda kasih sayang atau kepemilikan wilayah.</p>
-<hr>
-<h3>Manfaat Memelihara Kucing</h3>
-<p>Kehadiran kucing di rumah tidak hanya berfungsi sebagai teman bermain, tetapi juga membawa berbagai manfaat positif bagi kesehatan mental dan fisik pemiliknya:</p>
-<ul>
-  <li><b>Peredam Stres:</b> Suara dengkuran kucing terbukti memiliki frekuensi terapeutik yang dapat menenangkan sistem saraf, menurunkan tekanan darah, dan mengurangi kecemasan.</li>
-  <li><b>Menjaga Lingkungan:</b> Naluri pemburu alami membuat kucing sangat efektif dalam mengendalikan populasi hama kecil seperti tikus di sekitar rumah.</li>
-  <li><b>Melatih Tanggung Jawab:</b> Merawat kucing mengajarkan kedisiplinan dan empati, menjadikannya hewan peliharaan yang sangat baik untuk keluarga dan anak-anak.</li>
-</ul>
-<hr>
-<h3>Tips Perawatan Dasar</h3>
-<p>Agar kucing tetap sehat dan bahagia, ada beberapa kebutuhan utama yang harus dipenuhi oleh pemilik:</p>
-<ol>
-  <li><b>Nutrisi Seimbang:</b> Berikan makanan khusus kucing yang sesuai dengan usia dan kebutuhan gizinya, serta pastikan air bersih selalu tersedia.</li>
-  <li><b>Kebersihan:</b> Sediakan kotak pasir (<i>litter box</i>) yang bersih dan rutin menyisir bulu mereka untuk mencegah bola rambut (<i>hairball</i>).</li>
-  <li><b>Kesehatan Rutin:</b> Lakukan vaksinasi berkala dan pemeriksaan kesehatan ke dokter hewan guna mencegah penyakit berbahaya.</li>
-</ol>
-<hr>
-<blockquote>
-  Kucing bukan sekadar hewan peliharaan, melainkan anggota keluarga yang membawa kehangatan, hiburan, dan ketenangan di setiap rumah tempat mereka tinggal.
-</blockquote>
-                    Kucing adalah salah satu hewan peliharaan paling populer di dunia. Tingkah mereka yang menggemaskan, dari mengejar bola benang hingga tidur di tempat-tempat sempit, selalu berhasil membuat pemiliknya tersenyum. Namun lebih dari sekadar lucu, penelitian menunjukkan bahwa dengkuran kucing (purring) berada pada frekuensi yang dapat menurunkan tekanan darah dan meredakan stres.'
+                content: '<h2>Pesona Kucing: Sahabat Berbulu yang Memikat Hati Manusia</h2>\n<p>Kucing telah lama menjadi salah satu hewan peliharaan paling populer di seluruh dunia. Dengan langkahnya yang senyap, mata yang tajam, dan tingkah laku yang menggemaskan, hewan dari keluarga <i>feline</i> ini berhasil merebut tempat istimewa di hati jutaan orang.</p>\n<hr>\n<h3>Karakteristik dan Sifat Alami</h3>\n<p>Sebagai hewan karnivora obligat, kucing memiliki insting berburu yang sangat kuat. Meskipun sebagian besar kucing modern kini hidup nyaman di dalam rumah, naluri seperti mengintai, menerkam, dan memanjat tetap melekat pada diri mereka.</p>\n<p>Selain itu, kucing dikenal sebagai hewan yang sangat mandiri namun tetap penyayang. Mereka memiliki cara komunikasi yang unik untuk berinteraksi dengan manusia, mulai dari mengeong, mendengkur (<i>purring</i>), hingga menggesekkan tubuhnya sebagai tanda kasih sayang atau kepemilikan wilayah.</p>\n<hr>\n<h3>Manfaat Memelihara Kucing</h3>\n<p>Kehadiran kucing di rumah tidak hanya berfungsi sebagai teman bermain, tetapi juga membawa berbagai manfaat positif bagi kesehatan mental dan fisik pemiliknya:</p>\n<ul>\n  <li><b>Peredam Stres:</b> Suara dengkuran kucing terbukti memiliki frekuensi terapeutik yang dapat menenangkan sistem saraf, menurunkan tekanan darah, dan mengurangi kecemasan.</li>\n  <li><b>Menjaga Lingkungan:</b> Naluri pemburu alami membuat kucing sangat efektif dalam mengendalikan populasi hama kecil seperti tikus di sekitar rumah.</li>\n  <li><b>Melatih Tanggung Jawab:</b> Merawat kucing mengajarkan kedisiplinan dan empati, menjadikannya hewan peliharaan yang sangat baik untuk keluarga dan anak-anak.</li>\n</ul>\n<hr>\n<h3>Tips Perawatan Dasar</h3>\n<p>Agar kucing tetap sehat dan bahagia, ada beberapa kebutuhan utama yang harus dipenuhi oleh pemilik:</p>\n<ol>\n  <li><b>Nutrisi Seimbang:</b> Berikan makanan khusus kucing yang sesuai dengan usia dan kebutuhan gizinya, serta pastikan air bersih selalu tersedia.</li>\n  <li><b>Kebersihan:</b> Sediakan kotak pasir (<i>litter box</i>) yang bersih dan rutin menyisir bulu mereka untuk mencegah bola rambut (<i>hairball</i>).</li>\n  <li><b>Kesehatan Rutin:</b> Lakukan vaksinasi berkala dan pemeriksaan kesehatan ke dokter hewan guna mencegah penyakit berbahaya.</li>\n</ol>\n<hr>\n<blockquote>\n  Kucing bukan sekadar hewan peliharaan, melainkan anggota keluarga yang membawa kehangatan, hiburan, dan ketenangan di setiap rumah tempat mereka tinggal.\n</blockquote>\n                    Kucing adalah salah satu hewan peliharaan paling populer di dunia. Tingkah mereka yang menggemaskan, dari mengejar bola benang hingga tidur di tempat-tempat sempit, selalu berhasil membuat pemiliknya tersenyum. Namun lebih dari sekadar lucu, penelitian menunjukkan bahwa dengkuran kucing (purring) berada pada frekuensi yang dapat menurunkan tekanan darah dan meredakan stres.'
             },
             {
                 title: "Pesona Anggun Baju Abaya Modern",
@@ -179,9 +193,64 @@
         ];
 
         const appContainer = document.getElementById('app');
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
+
+        // Cek localStorage untuk data artikel yang disimpan pengguna
+        (function loadFromStorage() {
+            try {
+                const stored = localStorage.getItem('tekno_articles_v1');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length) articles = parsed;
+                }
+            } catch (e) {
+                console.warn('Gagal memuat data dari localStorage', e);
+            }
+        })();
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('tekno_articles_v1', JSON.stringify(articles));
+            } catch (e) {
+                console.warn('Gagal menyimpan data ke localStorage', e);
+            }
+        }
 
         function renderTags(tags) {
-            return tags.map(tag => `<span class="tag">#${tag}</span>`).join('');
+            return tags.map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join('');
+        }
+
+        // Escape ringan untuk teks (judul, description)
+        function escapeHtml(str) {
+            if (!str && str !== 0) return '';
+            return String(str).replace(/[&<>"']/g, function(m) {
+                return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m];
+            });
+        }
+
+        // Sanitizer sederhana: hapus script/style, atribut event (on...), dan javascript: pada href/src
+        function sanitizeHTML(dirty) {
+            if (!dirty) return '';
+            const doc = new DOMParser().parseFromString(dirty, 'text/html');
+
+            // remove script and style tags
+            doc.querySelectorAll('script,style').forEach(n => n.remove());
+
+            // Remove attributes that start with "on" (event handlers) and javascript: URIs
+            const nodes = doc.querySelectorAll('*');
+            nodes.forEach(node => {
+                [...node.attributes].forEach(attr => {
+                    const name = attr.name;
+                    const value = attr.value || '';
+                    if (name.startsWith('on')) {
+                        node.removeAttribute(name);
+                    } else if (/^javascript:/i.test(value.trim())) {
+                        node.removeAttribute(name);
+                    }
+                });
+            });
+
+            return doc.body.innerHTML;
         }
 
         // Fungsi untuk merender gambar, video embed (YouTube/Vimeo), atau video file (.mp4)
@@ -189,41 +258,191 @@ function renderMedia(article) {
     if (article.video) {
         // Cek apakah link video adalah file langsung (.mp4 atau .webm)
         if (article.video.endsWith('.mp4') || article.video.endsWith('.webm')) {
+            const src = escapeHtml(article.video);
             return `
             <video controls style="width: 100%; max-height: 400px; border-radius: 8px; margin-bottom: 15px; background-color: black;">
-                <source src="${article.video}" type="video/mp4">
+                <source src="${src}" type="video/mp4">
                 Maaf, browser Anda tidak mendukung pemutar video.
             </video>`;
         } 
         // Jika bukan .mp4, anggap sebagai link Embed (YouTube, Vimeo, dll)
         else {
+            const src = escapeHtml(article.video);
             return `
             <div class="video-container">
-                <iframe src="${article.video}" allowfullscreen></iframe>
+                <iframe src="${src}" allowfullscreen></iframe>
             </div>`;
         }
     } else if (article.image) {
-        return `<img src="${article.image}" alt="${article.title}" class="article-image">`;
+        const src = escapeHtml(article.image);
+        const alt = escapeHtml(article.title || '');
+        return `<img src="${src}" alt="${alt}" class="article-image">`;
     }
     return ''; // Kosong jika tidak ada media
 }
 
         function renderHome() {
             let html = '';
+            // Form tambah artikel (terlihat di beranda)
+            html += `
+            <div class="form-card" id="addForm" style="display:none;">
+                <div class="form-row">
+                    <div class="col">
+                        <label>Judul</label>
+                        <input type="text" id="f_title" placeholder="Judul artikel (wajib)">
+                    </div>
+                    <div class="col">
+                        <label>Slug</label>
+                        <input type="text" id="f_slug" placeholder="slug-artikel (contoh: kucing-lucu)">
+                        <div class="small">Gunakan huruf kecil dan tanda strip untuk spasi. Jika dikosongkan akan dibuat otomatis.</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label>Tags (pisahkan dengan koma)</label>
+                        <input type="text" id="f_tags" placeholder="Kucing, Hewan Peliharaan">
+                    </div>
+                    <div class="col">
+                        <label>Gambar URL</label>
+                        <input type="text" id="f_image" placeholder="https://...jpg">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label>Video Embed / URL (opsional)</label>
+                        <input type="text" id="f_video" placeholder="https://www.youtube.com/embed/ID atau https://...mp4">
+                        <div class="small">Jika diisi dengan link embed YouTube/Vimeo, akan ditampilkan sebagai iframe.</div>
+                    </div>
+                    <div class="col">
+                        <label>Deskripsi singkat</label>
+                        <input type="text" id="f_description" placeholder="Deskripsi singkat artikel">
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <label>Konten (HTML diperbolehkan — script & event handler akan dihapus)</label>
+                    <textarea id="f_content" placeholder="Masukkan HTML artikel di sini, misal: &lt;h2&gt;Judul&lt;/h2&gt;&lt;p&gt;Paragraf...&lt;/p&gt;"></textarea>
+                    <div class="small">Anda dapat memasukkan HTML (tag-tag seperti h1,h2,p,ul,ol,blockquote, img, iframe, video). Tag &lt;script&gt; dan atribut on* akan otomatis dihapus.</div>
+                    <div style="display:flex;gap:10px;margin-top:8px;">
+                        <button id="f_save" class="btn">Simpan Artikel</button>
+                        <button id="f_cancel" class="btn btn-back">Batal</button>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <strong>Preview:</strong>
+                        <div class="preview" id="f_preview"></div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            // Daftar artikel
             articles.forEach(article => {
                 html += `
                     <article class="article-card">
-                        <h2 class="article-title">${article.title}</h2>
+                        <h2 class="article-title">${escapeHtml(article.title)}</h2>
                         ${renderMedia(article)}
                         <div class="tags-container">
-                            ${renderTags(article.tags)}
+                            ${renderTags(article.tags || [])}
                         </div>
-                        <p class="article-desc">${article.description}</p>
-                        <a href="#${article.slug}" class="btn">Baca Selengkapnya &raquo;</a>
+                        <p class="article-desc">${escapeHtml(article.description)}</p>
+                        <a href="#${encodeURIComponent(article.slug)}" class="btn">Baca Selengkapnya &raquo;</a>
                     </article>
                 `;
             });
             appContainer.innerHTML = html;
+
+            // Hook form events
+            const addForm = document.getElementById('addForm');
+            const btn = document.getElementById('toggleFormBtn');
+            btn.addEventListener('click', () => {
+                if (addForm.style.display === 'none') {
+                    addForm.style.display = 'block';
+                    btn.textContent = 'Tutup Form';
+                } else {
+                    addForm.style.display = 'none';
+                    btn.textContent = '+ Tambah Artikel';
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Elements
+            const f_title = document.getElementById('f_title');
+            const f_slug = document.getElementById('f_slug');
+            const f_tags = document.getElementById('f_tags');
+            const f_image = document.getElementById('f_image');
+            const f_video = document.getElementById('f_video');
+            const f_description = document.getElementById('f_description');
+            const f_content = document.getElementById('f_content');
+            const f_save = document.getElementById('f_save');
+            const f_cancel = document.getElementById('f_cancel');
+            const f_preview = document.getElementById('f_preview');
+
+            function updatePreview() {
+                const sanitized = sanitizeHTML(f_content.value || '');
+                // Show media preview plus content sanitized
+                let media = '';
+                const v = (f_video.value || '').trim();
+                const img = (f_image.value || '').trim();
+                if (v) {
+                    if (v.endsWith('.mp4') || v.endsWith('.webm')) {
+                        media = `<video controls style="width:100%;max-height:200px;border-radius:6px;margin-bottom:8px;"><source src="${escapeHtml(v)}"></video>`;
+                    } else {
+                        media = `<div style="position:relative;padding-bottom:56.25%;height:0;margin-bottom:8px;"><iframe src="${escapeHtml(v)}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe></div>`;
+                    }
+                } else if (img) {
+                    media = `<img src="${escapeHtml(img)}" alt="" style="width:100%;max-height:200px;object-fit:cover;border-radius:6px;margin-bottom:8px;">`;
+                }
+                f_preview.innerHTML = media + sanitized;
+            }
+
+            [f_content, f_image, f_video].forEach(el => {
+                el.addEventListener('input', updatePreview);
+            });
+            updatePreview();
+
+            f_cancel.addEventListener('click', () => {
+                addForm.style.display = 'none';
+                btn.textContent = '+ Tambah Artikel';
+            });
+
+            f_save.addEventListener('click', () => {
+                const title = (f_title.value || '').trim();
+                if (!title) {
+                    alert('Judul wajib diisi.');
+                    return;
+                }
+                let slug = (f_slug.value || '').trim();
+                if (!slug) {
+                    slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                } else {
+                    slug = slug.toLowerCase().replace(/[^a-z0-9-]+/g, '-');
+                }
+                // Pastikan slug unik
+                let baseSlug = slug, i = 1;
+                while (articles.some(a => a.slug === slug)) {
+                    slug = baseSlug + '-' + i++;
+                }
+                const tags = (f_tags.value || '').split(',').map(t => t.trim()).filter(t => t);
+                const image = (f_image.value || '').trim() || null;
+                const video = (f_video.value || '').trim() || null;
+                const description = (f_description.value || '').trim() || '';
+                const rawContent = f_content.value || '';
+                const sanitizedContent = sanitizeHTML(rawContent);
+
+                const newArticle = {
+                    title,
+                    slug,
+                    tags,
+                    image,
+                    video,
+                    description,
+                    content: sanitizedContent
+                };
+
+                articles.unshift(newArticle); // push ke depan
+                saveToStorage();
+                // Langsung buka artikel baru
+                window.location.hash = slug;
+            });
         }
 
         function renderArticle(slug) {
@@ -231,12 +450,12 @@ function renderMedia(article) {
             if (article) {
                 appContainer.innerHTML = `
                     <article class="article-card">
-                        <h2 class="article-title">${article.title}</h2>
+                        <h2 class="article-title">${escapeHtml(article.title)}</h2>
                         ${renderMedia(article)}
                         <div class="tags-container">
-                            ${renderTags(article.tags)}
+                            ${renderTags(article.tags || [])}
                         </div>
-                        <p class="article-desc">${article.description}</p>
+                        <p class="article-desc">${escapeHtml(article.description)}</p>
                         <div class="article-content">
                             ${article.content}
                         </div>
@@ -254,7 +473,7 @@ function renderMedia(article) {
         }
 
         function router() {
-            const slug = window.location.hash.substring(1); 
+            const slug = decodeURIComponent(window.location.hash.substring(1)); 
             if (slug) {
                 renderArticle(slug);
                 window.scrollTo(0,0);
